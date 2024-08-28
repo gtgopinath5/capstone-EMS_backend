@@ -1,21 +1,17 @@
-// Import the express router
 const express = require('express');
-
-// Import the attendance controller
 const attendanceController = require('../controllers/attendanceController');
 const auth = require('../middlewares/auth');
 
-// Import the express router
 const attendanceRouter = express.Router();
 
 // User routes
-attendanceRouter.post('/', auth.isAuth, attendanceController.markAttendance); // Mark attendance for a user
-attendanceRouter.get('/user/:userId', auth.isAuth, attendanceController.getAttendanceByuserId); // Get attendance records for a specific user
+attendanceRouter.post('/attendance', auth.isAuth, attendanceController.createAttendance); // Create a new attendance record
+attendanceRouter.get('/attendance/user/:userId', auth.isAuth, attendanceController.getAttendanceByUserId); // Get attendance records by user ID
 
 // Admin routes
-attendanceRouter.get('/', auth.isAuth, auth.isAdmin, attendanceController.getAllAttendanceRecords); // Get all attendance records
-attendanceRouter.put('/:id', auth.isAuth, auth.isAdmin, attendanceController.updateAttendanceById); // Update attendance record
-attendanceRouter.delete('/:id', auth.isAuth, auth.isAdmin, attendanceController.deleteAttendanceById); // Delete attendance record
+attendanceRouter.get('/attendance', auth.isAuth, auth.isAdmin, attendanceController.getAllAttendanceRecords); // Get all attendance records
+attendanceRouter.put('/attendance/:id', auth.isAuth, auth.isAdmin, attendanceController.updateAttendanceById); // Update attendance record by ID
+attendanceRouter.delete('/attendance/:id', auth.isAuth, auth.isAdmin, attendanceController.deleteAttendanceById); // Delete attendance record by ID
 
 // Export the router
 module.exports = attendanceRouter;

@@ -13,7 +13,7 @@ const auth = {
                 return response.status(401).json({ message: 'Unauthorized' });
             }
 
-            // verify the tokenhttps://www.postman.com/workspace/00dfd991-7d0a-46ae-8517-18ed70113c22/request/37650987-836949e9-7dee-468d-b560-0fc71a104129
+            // verify the token
             try {
                 const decodedToken = jwt.verify(token, config.JWT_SECRET);
 

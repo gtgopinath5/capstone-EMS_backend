@@ -1,13 +1,14 @@
-// Schema definition remains the same
+// import mongoose
 const mongoose = require('mongoose');
 
+// create a schema
 const userSchema = new mongoose.Schema({
     username: String,
     passwordHash: String,
     name: String,
     location: {
         type: String,
-        default: 'unknown'
+        default: 'Unknown'
     },
     role: {
         type: String,
@@ -16,5 +17,5 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-// Create a model from the schema and export it
+// create a model from the schema and export it
 module.exports = mongoose.model('User', userSchema, 'users');

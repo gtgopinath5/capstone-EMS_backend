@@ -1,11 +1,12 @@
-//import the dotenv package
+// Import the dotenv package
 require("dotenv").config();
 
-//create all the necessary configuration variables
+// Create all the necessary configuration variables
 const MongoDB_URI = process.env.MONGODB_URI;
 const PORT = process.env.PORT;
-const JWT_SECRET=process.env.JWT_SECRET;
-//export
+const JWT_SECRET = process.env.JWT_SECRET;
+
+// Export the configuration variables
 module.exports = {
   MongoDB_URI,
   PORT,
