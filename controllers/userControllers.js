@@ -48,35 +48,30 @@ const userController = {
     },
 
      // In your login controller
-login: async (req, res) => {
-    try {
-        console.log('Login request received:', req.body);
-        const { username, password } = req.body;
-
-        if (!username || !password) {
-            return res.status(400).send({ message: 'Username and password are required' });
+     login: async (req, res) => {
+        try {
+          const { username, password } = req.body;
+    
+          // Find user in the database
+          const user = await User.findOne({ username });
+          if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }
+    
+          // Check password
+          const isMatch = await bcrypt.compare(password, user.passwordHash);
+          if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+          }
+    
+          // Generate token and send response
+          const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+          return res.json({ token, user });
+        } catch (error) {
+          console.error('Error during login:', error);
+          return res.status(500).json({ message: 'Server error during login' });
         }
-
-        const user = await User.findOne({ username });
-
-        if (!user) {
-            return res.status(401).send({ message: 'Invalid credentials' });
-        }
-
-        const isValidPassword = await bcrypt.compare(password, user.passwordHash);
-
-        if (!isValidPassword) {
-            return res.status(401).send({ message: 'Invalid credentials' });
-        }
-
-        const token = jwt.sign({ userId: user._id, username: user.username, name: user.name }, JWT_SECRET, { expiresIn: '1h' });
-        res.send({ token });
-    } catch (error) {
-        console.error('Error during login:', error);
-        res.status(500).send({ message: 'Internal Server Error' });
-    }
-},
-
+      },
     // get the current logged in user
     me: async (request, response) => {
         try {
